@@ -1,9 +1,11 @@
+// http://localhost:5500/
+
 const gameState = {
     players: ['x', 'o'],
     board: [
-      ['x', 'x', 'x'],
-      ['x', 'x', 'o'],
-      ['x', 'o', 'o']
+      ['X', 'X', 'O'],
+      ['X', 'O', 'O'],
+      ['X', 'O', 'X']
     ]
   }
 
@@ -15,11 +17,11 @@ const gameState = {
 
   function checkRow (puzzle, rowNum) {
     let boardRow = puzzle[rowNum]
-    console.log(boardRow)
+    // console.log(boardRow)
     return boardRow
   }
 
-  checkRow(gameState.board, 1)
+//   checkRow(gameState.board, 1)
 
 
 
@@ -32,11 +34,11 @@ const gameState = {
     for(let i = 0; i < puzzle.length; i++) {
         boardCol.push(puzzle[i][colNum])
     }
-    console.log(boardCol)
+    // console.log(boardCol)
     return boardCol
   }
 
-checkColumn(gameState.board, 0)
+// checkColumn(gameState.board, 0)
 
 
 
@@ -46,14 +48,14 @@ checkColumn(gameState.board, 0)
 
 function checkForwardDiagonal (puzzle) {
     boardDiag = []
-    for (let i = 0; i < gameState.board.length; i++) {
-        boardDiag.push(gameState.board[i][i])
+    for (let i = 0; i < puzzle.length; i++) {
+        boardDiag.push(puzzle[i][i])
     }
-    console.log(boardDiag)
+    // console.log(boardDiag)
     return boardDiag
 }
 
-checkForwardDiagonal(gameState.board)
+// checkForwardDiagonal(gameState.board)
 
 
 
@@ -66,11 +68,11 @@ function checkBackwardDiagonal (puzzle) {
     for (let i = 0; i < puzzle.length; i++) {
         boardDiagTwo.push(puzzle[i][(i * 2 + 5) % 3])
     }
-    console.log(boardDiagTwo)
+    // console.log(boardDiagTwo)
     return boardDiagTwo
 }
 
-checkBackwardDiagonal(gameState.board)
+// checkBackwardDiagonal(gameState.board)
 
 
 
@@ -78,22 +80,22 @@ checkBackwardDiagonal(gameState.board)
 
 
 
-// function checkForWin (arr) {
-//     for (let i = 0; i < arr.length; i++) {
-//     let newArray = arr[i].join('')
-//         if(newArray === 'xxx') {
-//         // console.log('true')
-//         return true
-//         }
-//         else if (newArray === 'ooo') {
-//         // console.log('false')
-//         return true
-//         }
-//         else {        
-//         return false
-//         }
-//     }
-// }
+function checkForWin (arr) {
+    for (let i = 0; i < arr.length; i++) {
+    let newArray = arr.join('')
+        if(newArray === 'XXX') {
+        // console.log('true')
+        return true
+        }
+        else if (newArray === 'OOO') {
+        // console.log('false')
+        return true
+        }
+        else {        
+        return false
+        }
+    }
+}
 
 // checkForWin(gameState.board)
 
@@ -104,39 +106,36 @@ checkBackwardDiagonal(gameState.board)
 
 
 function ticTacToeValidator (checker) {
+    let currentForwardDiagonal = checkForwardDiagonal(checker)
+    let checksOutForwardDiagonal = checkForWin(currentForwardDiagonal)
+    let currentBackwardDiagonal = checkBackwardDiagonal(checker)
+    let checksOutBackwardDiagonal = checkForWin(currentBackwardDiagonal)
+
+    if (!checksOutBackwardDiagonal) {
+        console.log("No Winner Backward Diagonal")
+    }
+
+    if (!checksOutForwardDiagonal) {
+        console.log("No Winner Forward Diagonal")
+    }
+
+
     for (let i = 0; i < checker.length; i++) {
         let currentRow = checkRow(checker, i)
         let checksOut = checkForWin(currentRow)
         if (!checksOut) {
-            console.log("No Winner")
+            console.log("No Winner Row", i)
         }
     }
 
     for (let i = 0; i < checker.length; i++) {
-        let currentCol = checkCol(checker, i)
+        let currentCol = checkColumn(checker, i)
         let checksOut = checkForWin(currentCol)
         if (!checksOut) {
-            console.log("No Winner")
+            console.log("No Winner Column", i)
         }
     }
 
-    for (let i = 0; i < gameState.board.length; i++) {
-        let currentForwardDiagonal = checkForwardDiagonal()
-        let checksOut = checkForWin(currentForwardDiagonal)
-        if (!checksOut) {
-            console.log("No Winner")
-        }
-    }
-
-    for (let i = 0; i < gameState.board.length; i++) {
-        let currentBackwardDiagonal = checkBackwardDiagonal()
-        let checksOut = checkForWin(currentBackwardDiagonal)
-        if (!checksOut) {
-            console.log("No Winner")
-        }
-    }
-    console.log('We have a winner')
-    return true
 }
 
 ticTacToeValidator(gameState.board)
