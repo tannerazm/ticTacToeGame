@@ -1,11 +1,17 @@
 // http://localhost:5500/
 
 const gameState = {
-    players: ['x', 'o'],
+    active: true,
+    players: ['X', 'O'],
     board: [
-      ['X', 'X', 'O'],
-      ['X', 'O', 'O'],
-      ['X', 'O', 'X']
+      ['X', 'O', 'X'],
+      ['O', 'X', 'O'],
+      ['O', 'X', 'O']
+    ],
+    clearBoard: [
+        [null, null, null],
+        [null, null, null], 
+        [null, null, null]
     ]
   }
 
@@ -21,7 +27,7 @@ const gameState = {
     return boardRow
   }
 
-//   checkRow(gameState.board, 1)
+  checkRow(gameState.board, 1)
 
 
 
@@ -38,7 +44,7 @@ const gameState = {
     return boardCol
   }
 
-// checkColumn(gameState.board, 0)
+checkColumn(gameState.board, 0)
 
 
 
@@ -55,7 +61,7 @@ function checkForwardDiagonal (puzzle) {
     return boardDiag
 }
 
-// checkForwardDiagonal(gameState.board)
+checkForwardDiagonal(gameState.board)
 
 
 
@@ -72,7 +78,7 @@ function checkBackwardDiagonal (puzzle) {
     return boardDiagTwo
 }
 
-// checkBackwardDiagonal(gameState.board)
+checkBackwardDiagonal(gameState.board)
 
 
 
@@ -85,10 +91,12 @@ function checkForWin (arr) {
     let newArray = arr.join('')
         if(newArray === 'XXX') {
         // console.log('true')
+        gameState.active = false;
         return true
         }
         else if (newArray === 'OOO') {
         // console.log('false')
+        gameState.active = false;
         return true
         }
         else {        
@@ -97,7 +105,7 @@ function checkForWin (arr) {
     }
 }
 
-// checkForWin(gameState.board)
+checkForWin(gameState.board)
 
 
 
@@ -112,11 +120,11 @@ function ticTacToeValidator (checker) {
     let checksOutBackwardDiagonal = checkForWin(currentBackwardDiagonal)
 
     if (!checksOutBackwardDiagonal) {
-        console.log("No Winner Backward Diagonal")
+        // console.log("No Winner Backward Diagonal")
     }
 
     if (!checksOutForwardDiagonal) {
-        console.log("No Winner Forward Diagonal")
+        // console.log("No Winner Forward Diagonal")
     }
 
 
@@ -124,7 +132,7 @@ function ticTacToeValidator (checker) {
         let currentRow = checkRow(checker, i)
         let checksOut = checkForWin(currentRow)
         if (!checksOut) {
-            console.log("No Winner Row", i)
+            // console.log("No Winner Row", i)
         }
     }
 
@@ -132,10 +140,44 @@ function ticTacToeValidator (checker) {
         let currentCol = checkColumn(checker, i)
         let checksOut = checkForWin(currentCol)
         if (!checksOut) {
-            console.log("No Winner Column", i)
+            // console.log("No Winner Column", i)
         }
     }
 
+    if (!gameState.active) {
+        console.log("The game is over!")
+    }
+
+    let flatBoard = gameState.board.flat()
+    
+    if (!flatBoard.includes(null)) {
+        console.log("The board is filled, click 'Clear' to reset the game!")
+    }
 }
 
 ticTacToeValidator(gameState.board)
+
+// let Original = [[null, null, null], [null, null, null], [null, null, null]]
+// let clickOriginal = [[["X","O"], ["X","O"], ["X","O"]], [["X","O"], ["X","O"], ["X","O"]], [["X","O"], ["X","O"], ["X","O"]]]
+// let clickClear = [[null, null, null], [null, null, null], [null, null, null]]
+
+// console.log (clickOriginal[0][0][0])
+
+// let board = document.getElementById('tictactoeTable')
+// let clear = document.getElementById('clearButton')
+// console.log(board)
+
+// board.addEventListener('click', (event) => {
+//     console.log(event)
+//     event.target.innerText = gameState.players[0]
+// })
+
+// board.addEventListener('click', (event) => {
+//     console.log(event)
+//     event.target.innerText = gameState.players[1]
+// })
+
+// clear.addEventListener('click', (event) => {
+//     console.log(event)
+//     event.target.innerText = gameState.clearGame
+// })
