@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: 'Staatliches', cursive;
+}
+
+html {
+    background-color: black;
+    color: #BFD7EA;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+table {
+    background-color: #baa898;
+    margin-top: 20px;
+}
+
+td {
+    display: table-cell;
+    background-color: #839788;
+    font-size: 75px;
+    color: black;
+    text-align: center;
+    height: 150px;
+    width: 150px;
+    margin: 5px;
+}
+
+.ticTacToeCell:hover {
+    background-color: #bfd7ea;
+}
+
+button {
+    background-color: #EEE0CB;
+    border-radius: 0;
+    font-weight: bold;
+    font-size: 18px;
+    border: 2px #839788 solid;
+    height: 50px;
+    width: 150px;
+    margin-top: 40px;
+}
+
+button:hover {
+    background-color: #baa898;
+    border: 2px #BFD7EA solid;
+}
