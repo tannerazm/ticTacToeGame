@@ -1,56 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Tanner's Tic-Tac-Toe</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Tanner's Terribly Tenacious Tic Tac Toe</h1>
-    
+    <span class="playernames">
+      <form class="playerX">
+        <input type="text" placeholder="Name of Player X" class="boxX" />
+      </form>
+      <form class="playerO">
+        <input type="text" placeholder="Name of Player O" class="boxO"/>
+      </form>
+    </span>
     <table id="tictactoeTable">
-    <tr>
-        <td class="ticTacToeCell" id="zeroZero">
-           
-        </td>
-        <td class="ticTacToeCell" id="zeroOne">
-            
-        </td>
-        <td class="ticTacToeCell" id="zeroTwo">
-            
-        </td>
-    </tr>
-    <tr>
-        <td class="ticTacToeCell" id="oneZero">
-           
-        </td>
-        <td class="ticTacToeCell" id="oneOne">
-            
-        </td>
-        <td class="ticTacToeCell" id="oneTwo">
-            
-        </td>
-    </tr>
-    <tr>
-        <td class="ticTacToeCell" id="twoZero">
-           
-        </td>
-        <td class="ticTacToeCell" id="twoOne">
-            
-        </td>
-        <td class="ticTacToeCell" id="twoTwo">
-            
-        </td>
-    </tr>
+      <tr>
+        <td class="ticTacToeCell" id="00"></td>
+        <td class="ticTacToeCell" id="01"></td>
+        <td class="ticTacToeCell" id="02"></td>
+      </tr>
+      <tr>
+        <td class="ticTacToeCell" id="10"></td>
+        <td class="ticTacToeCell" id="11"></td>
+        <td class="ticTacToeCell" id="12"></td>
+      </tr>
+      <tr>
+        <td class="ticTacToeCell" id="20"></td>
+        <td class="ticTacToeCell" id="21"></td>
+        <td class="ticTacToeCell" id="22"></td>
+      </tr>
     </table>
 
-    <button id="clearButton">
-        Clear
-    </button>
+    <button id="clearButton">Clear</button>
 
     <script type="text/javascript" src="/app.js"></script>
-
-</body>
+  </body>
 </html>
