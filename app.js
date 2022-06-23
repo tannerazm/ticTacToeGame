@@ -155,29 +155,45 @@ function ticTacToeValidator (checker) {
     }
 }
 
-ticTacToeValidator(gameState.board)
+// ticTacToeValidator(gameState.board)
 
 // let Original = [[null, null, null], [null, null, null], [null, null, null]]
 // let clickOriginal = [[["X","O"], ["X","O"], ["X","O"]], [["X","O"], ["X","O"], ["X","O"]], [["X","O"], ["X","O"], ["X","O"]]]
 // let clickClear = [[null, null, null], [null, null, null], [null, null, null]]
 
-// console.log (clickOriginal[0][0][0])
+let board = document.getElementById('tictactoeTable')
+let clear = document.getElementById('clearButton')
+let cellOne = document.getElementById('zeroZero')
+let cellTwo = document.getElementById('zeroOne')
+let cellThree = document.getElementById('zeroTwo')
+let cellFour = document.getElementById('oneZero')
+let cellFive = document.getElementById('oneOne')
+let cellSix = document.getElementById('oneTwo')
+let cellSeven = document.getElementById('twoZero')
+let cellEight = document.getElementById('twoOne')
+let cellNine = document.getElementById('twoTwo')
+let boardCounter = 0
 
-// let board = document.getElementById('tictactoeTable')
-// let clear = document.getElementById('clearButton')
-// console.log(board)
+board.addEventListener('click', (event) => {
 
-// board.addEventListener('click', (event) => {
-//     console.log(event)
-//     event.target.innerText = gameState.players[0]
-// })
+    if (boardCounter % 2 === 0) {
+    event.target.innerText = gameState.players[0]
+}
+    if (boardCounter % 2 === 1) {
+        event.target.innerText = gameState.players[1]
+    }
+    boardCounter++
+})
 
-// board.addEventListener('click', (event) => {
-//     console.log(event)
-//     event.target.innerText = gameState.players[1]
-// })
-
-// clear.addEventListener('click', (event) => {
-//     console.log(event)
-//     event.target.innerText = gameState.clearGame
-// })
+clear.addEventListener('click', (clickEvent) => {
+    clickEvent.target.matches('clear');
+    cellOne.innerText = null;
+    cellTwo.innerText = null;
+    cellThree.innerText = null;
+    cellFour.innerText = null;
+    cellFive.innerText = null;
+    cellSix.innerText = null;
+    cellSeven.innerText = null;
+    cellEight.innerText = null;
+    cellNine.innerText = null;
+})
