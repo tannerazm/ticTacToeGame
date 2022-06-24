@@ -25,11 +25,11 @@ input {
     border: 3px black solid;
 }
 
-.boxX {
+#boxX {
     margin-right: 35px;
 }
 
-.playerX, .playerO {
+#playerX, #playerO {
     display: inline-flex;
 }
 
@@ -67,4 +67,16 @@ button {
 button:hover {
     background-color: #baa898;
     border: 2px #BFD7EA solid;
+}
+
+div {
+    border: 3px black solid;
+    display: inline-flex;
+    background-color: blue;
+    height: 42px;
+    width: 200px;
+}
+
+#enterNameX {
+    margin-right: 35px;
 }

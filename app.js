@@ -144,7 +144,7 @@ board.addEventListener("click", (event) => {
       gameState.board[id[0]][id[1]] = gameState.players[1];
       ticTacToeValidator(gameState.board);
     }
-    // console.log(gameState.board);
+    console.log(gameState.board);
     boardCounter++;
   }
 });
@@ -160,3 +160,42 @@ clear.addEventListener("click", () => {
     [null, null, null],
   ];
 });
+
+// ---------------------------------------------------------------------------------- //
+
+let inputX = document.getElementById("boxX")
+let inputO = document.getElementById("boxO")
+let playerX = document.getElementById("playerX")
+let playerO = document.getElementById("playerO")
+let form = document.getElementsByTagName("form")
+
+inputX.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter' && inputX.value.length > 0) {
+            inputX.style.display = 'none'
+            playerX.style.marginRight = '30px'
+            playerX.style.fontSize = '30px'
+            playerX.style.textDecoration = 'underline'
+            playerX.innerHTML = 'Player X - ' + inputX.value
+    } else if (event.key === 'Enter') {
+        inputX.style.display = 'none'
+        playerX.style.marginRight = '30px'
+        playerX.style.fontSize = '30px'
+        playerX.style.textDecoration = 'underline'
+        playerX.innerHTML = 'Player X - Computer'
+}
+})
+
+inputO.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter' && inputO.value.length > 0) {
+            inputO.style.display = 'none'
+            playerO.style.fontSize = '30px'
+            playerO.style.textDecoration = 'underline'
+            playerO.innerHTML = 'Player O - ' + inputO.value
+    }
+    else if (event.key === 'Enter') {
+        inputO.style.display = 'none'
+        playerO.style.fontSize = '30px'
+        playerO.style.textDecoration = 'underline'
+        playerO.innerHTML = 'Player O - Computer'
+    }
+})
