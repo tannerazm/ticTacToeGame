@@ -49,7 +49,7 @@ td {
     margin: 5px;
 }
 
-.ticTacToeCell:hover {
+td:hover {
     background-color: #bfd7ea;
 }
 
@@ -87,7 +87,6 @@ div {
 }
 
 #winCounterX, #winCounterO {
-    background-color: black;
     padding-top: 15px;
     text-align: center;
     vertical-align: middle;
@@ -99,4 +98,9 @@ div {
 
 #enterNameX {
     margin-right: 35px;
+}
+
+.theGameHasEnded {
+    pointer-events: none;
+    background-color: gray;
 }

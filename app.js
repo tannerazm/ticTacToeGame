@@ -1,11 +1,13 @@
+// This is because my live server wasn't working //
 // http://localhost:5500/
 
 const gameState = {
   active: true,
-  playerName: [null, null],
-  winnerName: [null, null],
-  winnerCounter: [1, 1],
-  players: ["X", "O"],
+  playerName: [null, null], // Updates player names as you enter them into the inputs //
+  winnerName: [null, null], // Let's the game know when someone has won //
+  winnerCounterX: [1], // Starts the count at 1, for player X after someone has won at least once (will update later) //
+  winnerCounterO: [1], // Starts the count at 1, for player O after someone has won at least once (will update later) //
+  players: ["X", "O"], // Characters that are displayed in both the HTML and the gameState.board //
   board: [
     [null, null, null],
     [null, null, null],
@@ -14,71 +16,69 @@ const gameState = {
 };
 
 // ---------------------------------------------------------------------------------- //
+// Returns row as an array to be checked //
 
 function checkRow(puzzle, rowNum) {
   let boardRow = puzzle[rowNum];
-  // console.log(boardRow)
   return boardRow;
 }
 
 checkRow(gameState.board, 1);
 
 // ---------------------------------------------------------------------------------- //
+// Returns column as an array to be checked //
 
 function checkColumn(puzzle, colNum) {
   let boardCol = [];
   for (let i = 0; i < puzzle.length; i++) {
     boardCol.push(puzzle[i][colNum]);
   }
-  // console.log(boardCol)
   return boardCol;
 }
 
 checkColumn(gameState.board, 0);
 
 // ---------------------------------------------------------------------------------- //
+// Returns forward diagonal as an array to be checked //
 
 function checkForwardDiagonal(puzzle) {
   boardDiag = [];
   for (let i = 0; i < puzzle.length; i++) {
     boardDiag.push(puzzle[i][i]);
   }
-  // console.log(boardDiag)
   return boardDiag;
 }
 
 checkForwardDiagonal(gameState.board);
 
 // ---------------------------------------------------------------------------------- //
+// Returns backward diagonal as an array to be checked //
 
 function checkBackwardDiagonal(puzzle) {
   boardDiagTwo = [];
   for (let i = 0; i < puzzle.length; i++) {
     boardDiagTwo.push(puzzle[i][(i * 2 + 5) % 3]);
   }
-  // console.log(boardDiagTwo)
   return boardDiagTwo;
 }
 
 checkBackwardDiagonal(gameState.board);
 
 // ---------------------------------------------------------------------------------- //
+// Checks arrays above to see if any of them have a winner && converts those arrays into strings //
 
 function checkForWin(arr) {
   for (let i = 0; i < arr.length; i++) {
     let newArray = arr.join("");
     if (newArray === "XXX") {
-      // console.log('true')
       gameState.winnerName[0] = `${gameState.playerName[0]} has won the game!`;
-      winCounterX.innerHTML = `X Score  =  ${gameState.winnerCounter[0]++}`
-      console.log(gameState.winnerName[0]);
+      winCounterX.innerHTML = `X Score  =  ${gameState.winnerCounterX[0]++}`;
       gameState.active = false;
       return true;
     } else if (newArray === "OOO") {
-      // console.log('false')
       gameState.winnerName[1] = `${gameState.playerName[1]} has won the game!`;
-      winCounterO.innerHTML = `O Score  =  ${gameState.winnerCounter[1]++}`
-      console.log(gameState.winnerName[1]);
+      winCounterO.innerHTML = `O Score  =  ${gameState.winnerCounterO[0]}`;
+      gameState.winnerCounterO[0]++
       gameState.active = false;
       return true;
     } else {
@@ -90,6 +90,7 @@ function checkForWin(arr) {
 checkForWin(gameState.board);
 
 // ---------------------------------------------------------------------------------- //
+// Allows for the other functions to be ran through the checkForWin function to determine if there is a winner //
 
 function ticTacToeValidator(checker) {
   let currentForwardDiagonal = checkForwardDiagonal(checker);
@@ -98,18 +99,15 @@ function ticTacToeValidator(checker) {
   let checksOutBackwardDiagonal = checkForWin(currentBackwardDiagonal);
 
   if (!checksOutBackwardDiagonal) {
-    // console.log("No Winner Backward Diagonal")
   }
 
   if (!checksOutForwardDiagonal) {
-    // console.log("No Winner Forward Diagonal")
   }
 
   for (let i = 0; i < checker.length; i++) {
     let currentRow = checkRow(checker, i);
     let checksOut = checkForWin(currentRow);
     if (!checksOut) {
-      // console.log("No Winner Row", i)
     }
   }
 
@@ -117,36 +115,46 @@ function ticTacToeValidator(checker) {
     let currentCol = checkColumn(checker, i);
     let checksOut = checkForWin(currentCol);
     if (!checksOut) {
-      // console.log("No Winner Column", i)
     }
-  }
-  // let counter = 0
-  if (!gameState.active) {
-    console.log("The game is over!");
-    if (gameState.winnerName[0]) {
-      // winCounterX.innerHTML = `X Score  =  ${counter}`
-      winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} (X) has won the game!`;
-      winnerWinnerChickenDinner.style.color = "#BFD7EA"
-    }
-    if (gameState.winnerName[1]) {
-      // winCounterO.innerHTML = `O Score  =  ${counter}`
-      winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[1]} (O) has won the game!`;
-      winnerWinnerChickenDinner.style.color = "#BFD7EA"
-    }
-    gameState.winnerName = [null, null]
   }
 
-  // counter++
+  if (!gameState.active) {
+    if (gameState.winnerName[0]) {
+      winnerWinnerChickenDinner.innerHTML = gameState.winnerName[0];
+    }
+    if (gameState.winnerName[1]) {
+      console.log(gameState.winnerName[1])
+      winnerWinnerChickenDinner.innerHTML = gameState.winnerName[1];
+    }
+    // Changes class and allows me to update CSS based on the new class name //
+    Array.from(tdElement).forEach((element) => element.classList.add('theGameHasEnded'))
+    gameState.winnerName = [null, null];
+  }
+
+  // Allows for me to check to check to see if the board is filled and displays if the board is full //
   let flatBoard = gameState.board.flat();
 
   if (!flatBoard.includes(null)) {
-    winnerWinnerChickenDinner.innerHTML = `The board is filled, click 'Clear' to reset the game!`
-    winnerWinnerChickenDinner.style.color = "red"
-    console.log("The board is filled, click 'Clear' to reset the game!");
+    winnerWinnerChickenDinner.innerHTML = `The board is filled, click 'Clear' to reset the game!`;
   }
 }
 
 // ---------------------------------------------------------------------------------- //
+// Allows for the game to determine who starts the game and what player they are //
+
+function chosenPlayer() {
+  if (Math.random() < 0.5) {
+    boardCounter = 0
+    winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`
+  }
+  else {
+    boardCounter = 1
+    winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[1]} is currently playing.`
+  }
+}
+
+// ---------------------------------------------------------------------------------- //
+// Allows for me to press enter to officially enter the names into our arrays for player 1 and 2 //
 
 let inputX = document.getElementById("boxX");
 let inputO = document.getElementById("boxO");
@@ -156,70 +164,94 @@ let form = document.getElementsByTagName("form");
 
 inputX.addEventListener("keypress", (event) => {
   if (event.key === "Enter" && inputX.value.length > 0) {
-    inputX.style.display = "none";
     playerX.style.marginRight = "30px";
     playerX.style.fontSize = "30px";
     playerX.style.textDecoration = "underline";
-    playerX.innerHTML = "Player X - " + inputX.value;
+    playerX.innerHTML = inputX.value;
     gameState.playerName[0] = inputX.value;
-    console.log(gameState.playerName);
-  } else if (event.key === "Enter") {
-    inputX.style.display = "none";
-    playerX.style.marginRight = "30px";
-    playerX.style.fontSize = "30px";
-    playerX.style.textDecoration = "underline";
-    playerX.innerHTML = "Player X - Computer";
-    gameState.playerName[0] = "Computer";
-    console.log(gameState.playerName);
-  }
+  } 
 });
 
 inputO.addEventListener("keypress", (event) => {
   if (event.key === "Enter" && inputO.value.length > 0) {
-    inputO.style.display = "none";
     playerO.style.fontSize = "30px";
     playerO.style.textDecoration = "underline";
-    playerO.innerHTML = "Player O - " + inputO.value;
+    playerO.innerHTML = inputO.value;
     gameState.playerName[1] = inputO.value;
-    console.log(gameState.playerName);
-  } else if (event.key === "Enter") {
-    inputO.style.display = "none";
+    chosenPlayer()
+  } 
+  else if (event.key === "Enter") {
     playerO.style.fontSize = "30px";
     playerO.style.textDecoration = "underline";
-    playerO.innerHTML = "Player O - Computer";
+    playerO.innerHTML = "Computer";
     gameState.playerName[1] = "Computer";
-    console.log(gameState.playerName);
   }
 });
 
+
 // ---------------------------------------------------------------------------------- //
+// Allows for specific functions to occur whenever you click on a specific "cell" in the HTML //
 
 let board = document.getElementById("tictactoeTable");
-let clear = document.getElementById("clearButton");
-let boardCounter = 0;
+let tdElement = document.getElementsByTagName('td');
+let boardCounter = 0
 
 board.addEventListener("click", (event) => {
   let id = event.target.id;
-  if (gameState.active) {
-    if (!gameState.board[id[0]][id[1]]) {
-      if (boardCounter % 2 === 0) {
-        event.target.innerText = gameState.players[0];
-        gameState.board[id[0]][id[1]] = gameState.players[0];
-        ticTacToeValidator(gameState.board);
+
+  if(gameState.active)  {
+  if (!gameState.board[id[0]][id[1]]) {
+      if(boardCounter % 2 === 0){
+          event.target.innerText = gameState.players[0];
+          gameState.board[id[0]][id[1]] = gameState.players[0];
+          winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`
+          ticTacToeValidator(gameState.board);
       }
-      if (boardCounter % 2 === 1) {
+
+      if(boardCounter % 2 === 1){
         event.target.innerText = gameState.players[1];
         gameState.board[id[0]][id[1]] = gameState.players[1];
+        winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[1]} is currently playing.`
         ticTacToeValidator(gameState.board);
-      }
-      console.log(gameState.board);
-      boardCounter++;
+    }
+    boardCounter++;
+    // If the computer needs to play whenever the person is playing against a computer, otherwise it doesn't run //
+    computerPlays()
     }
   }
-});
+  });
 
 // ---------------------------------------------------------------------------------- //
-let counter = 0
+// Only happens if someone is playing a computer, allows for automatic moves to occur after the user plays //
+
+function computerPlays() {
+
+if (boardCounter % 2 === 1 && gameState.playerName[1] === 'Computer' && gameState.active) {
+  winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`
+  let newArr = []
+  for (let i = 0; i < 9; i++){
+    if(tdElement[i].innerText === ''){
+    newArr.push(i)
+    }
+  }
+
+  let randomNull = Math.floor(Math.random() * newArr.length)
+  let computerId = tdElement[newArr[randomNull]].id
+  let computerChosenCell = tdElement[newArr[randomNull]]
+  let computerCellInBoard = gameState.board[computerId[0]][computerId[1]]
+  computerCellInBoard = gameState.players[1] 
+  computerChosenCell.click()
+  winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`
+  ticTacToeValidator(gameState.board);
+}
+}
+
+// ---------------------------------------------------------------------------------- //
+// Allows for the clear button to make adjustments to the board as well as the other
+// elements that need to be cleared when the board is cleared. //
+
+let clear = document.getElementById("clearButton");
+let counter = 0;
 clear.addEventListener("click", () => {
   [...document.querySelectorAll("td")].forEach(
     (tdDomElement) => (tdDomElement.innerHTML = "")
@@ -233,8 +265,12 @@ clear.addEventListener("click", () => {
 
   gameState.active = true;
 
-  winnerWinnerChickenDinner.innerHTML = ''
+  boardCounter = 0
 
+  winnerWinnerChickenDinner.innerHTML = "";
+  winnerWinnerChickenDinner.style.color = "BFD7EA";
+
+  Array.from(tdElement).forEach((element) => element.classList.remove('theGameHasEnded'))
 });
 
 // ---------------------------------------------------------------------------------- //
