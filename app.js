@@ -15,6 +15,15 @@ const gameState = {
   ],
 };
 
+let tdElement = document.getElementsByTagName("td");
+
+// If either input is null, instructions are set to display to guide players to assign themselves //
+
+if (gameState.playerName[0] === null || gameState.playerName[1] === null) {
+  winnerWinnerChickenDinner.innerHTML = `Insert Players Above - If Single Player, Hit Enter On Right Input Without Typing Anything`;
+  winnerWinnerChickenDinner.style.color = "#839788";
+}
+
 // ---------------------------------------------------------------------------------- //
 // Returns row as an array to be checked //
 
@@ -23,7 +32,7 @@ function checkRow(puzzle, rowNum) {
   return boardRow;
 }
 
-checkRow(gameState.board, 1);
+// checkRow(gameState.board, 1);
 
 // ---------------------------------------------------------------------------------- //
 // Returns column as an array to be checked //
@@ -36,7 +45,7 @@ function checkColumn(puzzle, colNum) {
   return boardCol;
 }
 
-checkColumn(gameState.board, 0);
+// checkColumn(gameState.board, 0);
 
 // ---------------------------------------------------------------------------------- //
 // Returns forward diagonal as an array to be checked //
@@ -49,7 +58,7 @@ function checkForwardDiagonal(puzzle) {
   return boardDiag;
 }
 
-checkForwardDiagonal(gameState.board);
+// checkForwardDiagonal(gameState.board);
 
 // ---------------------------------------------------------------------------------- //
 // Returns backward diagonal as an array to be checked //
@@ -62,7 +71,7 @@ function checkBackwardDiagonal(puzzle) {
   return boardDiagTwo;
 }
 
-checkBackwardDiagonal(gameState.board);
+// checkBackwardDiagonal(gameState.board);
 
 // ---------------------------------------------------------------------------------- //
 // Checks arrays above to see if any of them have a winner && converts those arrays into strings //
@@ -71,14 +80,15 @@ function checkForWin(arr) {
   for (let i = 0; i < arr.length; i++) {
     let newArray = arr.join("");
     if (newArray === "XXX") {
-      gameState.winnerName[0] = `${gameState.playerName[0]} has won the game!`;
-      winCounterX.innerHTML = `X Score  =  ${gameState.winnerCounterX[0]++}`;
+      gameState.winnerName[0] = gameState.playerName[0];
+      winCounterX.innerHTML = `${gameState.playerName[0]} Score  =  ${gameState.winnerCounterX[0]}`;
+      gameState.winnerCounterX[0]++;
       gameState.active = false;
       return true;
     } else if (newArray === "OOO") {
-      gameState.winnerName[1] = `${gameState.playerName[1]} has won the game!`;
-      winCounterO.innerHTML = `O Score  =  ${gameState.winnerCounterO[0]}`;
-      gameState.winnerCounterO[0]++
+      gameState.winnerName[1] = gameState.playerName[1];
+      winCounterO.innerHTML = `${gameState.playerName[1]} Score  =  ${gameState.winnerCounterO[0]}`;
+      gameState.winnerCounterO[0]++;
       gameState.active = false;
       return true;
     } else {
@@ -120,22 +130,27 @@ function ticTacToeValidator(checker) {
 
   if (!gameState.active) {
     if (gameState.winnerName[0]) {
-      winnerWinnerChickenDinner.innerHTML = gameState.winnerName[0];
+      winnerWinnerChickenDinner.innerHTML = `${gameState.winnerName[0]} has won the game!`;
+      winnerWinnerChickenDinner.style.color = "rgb(0,255,0)";
     }
     if (gameState.winnerName[1]) {
-      console.log(gameState.winnerName[1])
-      winnerWinnerChickenDinner.innerHTML = gameState.winnerName[1];
+      winnerWinnerChickenDinner.innerHTML = `${gameState.winnerName[1]} has won the game!`;
+      winnerWinnerChickenDinner.style.color = "rgb(0,255,0)";
     }
     // Changes class and allows me to update CSS based on the new class name //
-    Array.from(tdElement).forEach((element) => element.classList.add('theGameHasEnded'))
+    Array.from(tdElement).forEach((element) =>
+      element.classList.add("theGameHasEnded")
+    );
     gameState.winnerName = [null, null];
   }
 
   // Allows for me to check to check to see if the board is filled and displays if the board is full //
+
   let flatBoard = gameState.board.flat();
 
   if (!flatBoard.includes(null)) {
     winnerWinnerChickenDinner.innerHTML = `The board is filled, click 'Clear' to reset the game!`;
+    winnerWinnerChickenDinner.style.color = "#BFD7EA";
   }
 }
 
@@ -143,13 +158,25 @@ function ticTacToeValidator(checker) {
 // Allows for the game to determine who starts the game and what player they are //
 
 function chosenPlayer() {
-  if (Math.random() < 0.5) {
-    boardCounter = 0
-    winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`
-  }
-  else {
-    boardCounter = 1
-    winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[1]} is currently playing.`
+  let randomNumber = Math.random();
+
+  if (randomNumber < 0.5 && gameState.playerName[1] !== "Computer") {
+    boardCounter = 0;
+    winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`;
+    winnerWinnerChickenDinner.style.color = "#BFD7EA";
+  } else if (randomNumber >= 0.5 && gameState.playerName[1] !== "Computer") {
+    boardCounter = 1;
+    winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[1]} is currently playing.`;
+    winnerWinnerChickenDinner.style.color = "#BFD7EA";
+  } else if (randomNumber < 0.5 && gameState.playerName[1] === "Computer") {
+    winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`;
+    winnerWinnerChickenDinner.style.color = "#BFD7EA";
+    boardCounter = 0;
+  } else if (randomNumber >= 0.5 && gameState.playerName[1] === "Computer") {
+    winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`;
+    winnerWinnerChickenDinner.style.color = "#BFD7EA";
+    boardCounter = 1;
+    computerPlays();
   }
 }
 
@@ -169,7 +196,8 @@ inputX.addEventListener("keypress", (event) => {
     playerX.style.textDecoration = "underline";
     playerX.innerHTML = inputX.value;
     gameState.playerName[0] = inputX.value;
-  } 
+    winCounterX.innerHTML = `${gameState.playerName[0]} Score  =  0`;
+  }
 });
 
 inputO.addEventListener("keypress", (event) => {
@@ -178,72 +206,93 @@ inputO.addEventListener("keypress", (event) => {
     playerO.style.textDecoration = "underline";
     playerO.innerHTML = inputO.value;
     gameState.playerName[1] = inputO.value;
-    chosenPlayer()
-  } 
-  else if (event.key === "Enter") {
+    winCounterO.innerHTML = `${gameState.playerName[1]} Score  =  0`;
+    chosenPlayer();
+  } else if (event.key === "Enter") {
     playerO.style.fontSize = "30px";
     playerO.style.textDecoration = "underline";
     playerO.innerHTML = "Computer";
     gameState.playerName[1] = "Computer";
+    winCounterO.innerHTML = `${gameState.playerName[1]} Score  =  0`;
+    chosenPlayer();
   }
 });
-
 
 // ---------------------------------------------------------------------------------- //
 // Allows for specific functions to occur whenever you click on a specific "cell" in the HTML //
 
 let board = document.getElementById("tictactoeTable");
-let tdElement = document.getElementsByTagName('td');
-let boardCounter = 0
+let boardCounter = 0;
 
 board.addEventListener("click", (event) => {
   let id = event.target.id;
-
-  if(gameState.active)  {
-  if (!gameState.board[id[0]][id[1]]) {
-      if(boardCounter % 2 === 0){
-          event.target.innerText = gameState.players[0];
-          gameState.board[id[0]][id[1]] = gameState.players[0];
-          winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`
-          ticTacToeValidator(gameState.board);
+  if (gameState.active) {
+    if (!gameState.board[id[0]][id[1]]) {
+      if (boardCounter % 2 === 0) {
+        event.target.innerText = gameState.players[0];
+        gameState.board[id[0]][id[1]] = gameState.players[0];
+        winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[1]} is currently playing.`;
+        winnerWinnerChickenDinner.style.color = "#BFD7EA";
+        ticTacToeValidator(gameState.board);
       }
 
-      if(boardCounter % 2 === 1){
+      if (boardCounter % 2 === 1) {
         event.target.innerText = gameState.players[1];
         gameState.board[id[0]][id[1]] = gameState.players[1];
-        winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[1]} is currently playing.`
+        winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`;
+        winnerWinnerChickenDinner.style.color = "#BFD7EA";
         ticTacToeValidator(gameState.board);
-    }
-    boardCounter++;
-    // If the computer needs to play whenever the person is playing against a computer, otherwise it doesn't run //
-    computerPlays()
+      }
+      boardCounter++;
+      // If the computer needs to play whenever the person is playing against a computer, otherwise it doesn't run //
+      let includesNull = gameState.board.flat().includes(null);
+
+      if (includesNull) {
+        computerPlays();
+      }
+
+      if (!includesNull) {
+        winnerWinnerChickenDinner.innerHTML = `The board is filled, click 'Clear' to reset the game!`;
+        winnerWinnerChickenDinner.style.color = "rgb(255,0,0)";
+        Array.from(tdElement).forEach((element) =>
+          element.classList.add("theGameHasEnded")
+        );
+        gameState.winnerName = [null, null];
+      }
     }
   }
-  });
+});
 
 // ---------------------------------------------------------------------------------- //
 // Only happens if someone is playing a computer, allows for automatic moves to occur after the user plays //
 
 function computerPlays() {
+  let computerWin = checkForWin(gameState.board);
+  if (
+    boardCounter % 2 === 1 &&
+    gameState.playerName[1] === "Computer" &&
+    gameState.active
+  ) {
+    let newArr = [];
 
-if (boardCounter % 2 === 1 && gameState.playerName[1] === 'Computer' && gameState.active) {
-  winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`
-  let newArr = []
-  for (let i = 0; i < 9; i++){
-    if(tdElement[i].innerText === ''){
-    newArr.push(i)
+    for (let i = 0; i < 9; i++) {
+      if (tdElement[i].innerText === "") {
+        newArr.push(i);
+      }
+    }
+
+    let randomNull = Math.floor(Math.random() * newArr.length);
+    let computerId = tdElement[newArr[randomNull]].id;
+    let computerChosenCell = tdElement[newArr[randomNull]];
+    let computerCellInBoard = gameState.board[computerId[0]][computerId[1]];
+    computerCellInBoard = gameState.players[1];
+    computerChosenCell.click();
+
+    if (computerWin) {
+      winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[1]} has won the game!`;
+      winnerWinnerChickenDinner.style.color = "#BFD7EA";
     }
   }
-
-  let randomNull = Math.floor(Math.random() * newArr.length)
-  let computerId = tdElement[newArr[randomNull]].id
-  let computerChosenCell = tdElement[newArr[randomNull]]
-  let computerCellInBoard = gameState.board[computerId[0]][computerId[1]]
-  computerCellInBoard = gameState.players[1] 
-  computerChosenCell.click()
-  winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`
-  ticTacToeValidator(gameState.board);
-}
 }
 
 // ---------------------------------------------------------------------------------- //
@@ -265,12 +314,13 @@ clear.addEventListener("click", () => {
 
   gameState.active = true;
 
-  boardCounter = 0
-
   winnerWinnerChickenDinner.innerHTML = "";
-  winnerWinnerChickenDinner.style.color = "BFD7EA";
 
-  Array.from(tdElement).forEach((element) => element.classList.remove('theGameHasEnded'))
+  chosenPlayer();
+
+  Array.from(tdElement).forEach((element) =>
+    element.classList.remove("theGameHasEnded")
+  );
 });
 
 // ---------------------------------------------------------------------------------- //
