@@ -30,6 +30,7 @@ input {
 }
 
 #boxO {
+    visibility: hidden;
     pointer-events: none;
 }
 
@@ -37,9 +38,20 @@ input {
     display: inline-flex;
 }
 
+#winCounterX {
+    visibility: hidden;
+}
+
+#winCounterO {
+    visibility: hidden;
+}
+
+#divider {
+    visibility: hidden;
+}
+
 #tictactoeTable {
     display: none;
-    pointer-events: none;
     margin-top: 20px;
 }
 

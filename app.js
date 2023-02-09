@@ -18,6 +18,9 @@ let tdElement = document.getElementsByTagName("td");
 let board = document.getElementById("tictactoeTable");
 let resetAll = document.getElementById("resetAll");
 let clear = document.getElementById("clearButton");
+let divider = document.getElementById("divider");
+let winCounterX = document.getElementById("winCounterX");
+let winCounterO = document.getElementById("winCounterO");
 
 // If either input is null, instructions are set to display to guide players to assign themselves //
 
@@ -206,18 +209,24 @@ inputX.addEventListener("keydown", (event) => {
     inputO.style.pointerEvents = "all";
     gameState.playerName[0] = inputX.value;
     winCounterX.innerHTML = `${gameState.playerName[0]} Score  =  0`;
+    if (gameState.playerName[0]) {
+      inputO.style.visibility = "visible";
+    }
     if (gameState.playerName[0] && gameState.playerName[1]) {
-      board.style.pointerEvents = "all";
       board.style.display = "block";
       resetAll.style.display = "block";
       clear.style.display = "block";
+      divider.style.visibility = "visible";
+      winCounterX.style.visibility = "visible";
+      winCounterO.style.visibility = "visible";
       chosenPlayer();
     }
   } else if (
     (event.key === "Enter" || event.key === "Tab") &&
     inputX.value.length === 0
   ) {
-    inputX.style.border = "2px solid red";
+    event.preventDefault();
+    inputX.style.border = "5px solid red";
     inputX.placeholder = "You must enter a name!";
   }
 });
@@ -233,10 +242,12 @@ inputO.addEventListener("keydown", (event) => {
     gameState.playerName[1] = inputO.value;
     winCounterO.innerHTML = `${gameState.playerName[1]} Score  =  0`;
     if (gameState.playerName[0] && gameState.playerName[1]) {
-      board.style.pointerEvents = "all";
       board.style.display = "block";
       resetAll.style.display = "block";
       clear.style.display = "block";
+      divider.style.visibility = "visible";
+      winCounterX.style.visibility = "visible";
+      winCounterO.style.visibility = "visible";
     }
     chosenPlayer();
   } else if (event.key === "Enter" || event.key === "Tab") {
@@ -246,10 +257,13 @@ inputO.addEventListener("keydown", (event) => {
     gameState.playerName[1] = "Computer";
     winCounterO.innerHTML = `${gameState.playerName[1]} Score  =  0`;
     if (gameState.playerName[0] && gameState.playerName[1]) {
-      board.style.pointerEvents = "all";
       board.style.display = "block";
       resetAll.style.display = "block";
       clear.style.display = "block";
+      divider.style.visibility = "visible";
+      winCounterX.style.visibility = "visible";
+      winCounterO.style.visibility = "visible";
+      inputO.placeholder = "Name of Player X"
     }
     chosenPlayer();
   }
