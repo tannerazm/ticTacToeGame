@@ -25,7 +25,7 @@ let winCounterO = document.getElementById("winCounterO");
 // If either input is null, instructions are set to display to guide players to assign themselves //
 
 if (gameState.playerName[0] === null || gameState.playerName[1] === null) {
-  winnerWinnerChickenDinner.innerHTML = `Insert Player Names Above And Push Enter or Tab <br /> If Single Player, Hit Enter or Tab On Right Input Without Typing Anything`;
+  winnerWinnerChickenDinner.innerHTML = `Insert Player Names Above And Push Enter or Tab <br /> If Single Player, Hit Enter or Tab On Second Input Without Typing Anything`;
   winnerWinnerChickenDinner.style.color = "#839788";
 }
 
