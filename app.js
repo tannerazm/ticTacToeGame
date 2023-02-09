@@ -14,13 +14,15 @@ const gameState = {
     [null, null, null],
   ],
 };
-
 let tdElement = document.getElementsByTagName("td");
+let board = document.getElementById("tictactoeTable");
+let resetAll = document.getElementById("resetAll");
+let clear = document.getElementById("clearButton");
 
 // If either input is null, instructions are set to display to guide players to assign themselves //
 
 if (gameState.playerName[0] === null || gameState.playerName[1] === null) {
-  winnerWinnerChickenDinner.innerHTML = `Insert Players Above - If Single Player, Hit Enter On Right Input Without Typing Anything`;
+  winnerWinnerChickenDinner.innerHTML = `Insert Player Names Above And Push Enter or Tab <br /> If Single Player, Hit Enter or Tab On Right Input Without Typing Anything`;
   winnerWinnerChickenDinner.style.color = "#839788";
 }
 
@@ -159,20 +161,22 @@ function ticTacToeValidator(checker) {
 
 function chosenPlayer() {
   let randomNumber = Math.random();
+  let gameStatePlayerX = gameState.playerName[0]
+  let gameStatePlayerO = gameState.playerName[1]
 
-  if (randomNumber < 0.5 && gameState.playerName[1] !== "Computer") {
+  if (randomNumber < 0.5 && gameState.playerName[1] !== "Computer" && gameStatePlayerX && gameStatePlayerO) {
     boardCounter = 0;
     winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`;
     winnerWinnerChickenDinner.style.color = "#BFD7EA";
-  } else if (randomNumber >= 0.5 && gameState.playerName[1] !== "Computer") {
+  } else if (randomNumber >= 0.5 && gameState.playerName[1] !== "Computer" && gameStatePlayerX && gameStatePlayerO) {
     boardCounter = 1;
     winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[1]} is currently playing.`;
     winnerWinnerChickenDinner.style.color = "#BFD7EA";
-  } else if (randomNumber < 0.5 && gameState.playerName[1] === "Computer") {
+  } else if (randomNumber < 0.5 && gameState.playerName[1] === "Computer" && gameStatePlayerX && gameStatePlayerO) {
     winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`;
     winnerWinnerChickenDinner.style.color = "#BFD7EA";
     boardCounter = 0;
-  } else if (randomNumber >= 0.5 && gameState.playerName[1] === "Computer") {
+  } else if (randomNumber >= 0.5 && gameState.playerName[1] === "Computer" && gameStatePlayerX && gameStatePlayerO) {
     winnerWinnerChickenDinner.innerHTML = `${gameState.playerName[0]} is currently playing.`;
     winnerWinnerChickenDinner.style.color = "#BFD7EA";
     boardCounter = 1;
@@ -189,31 +193,64 @@ let playerX = document.getElementById("playerX");
 let playerO = document.getElementById("playerO");
 let form = document.getElementsByTagName("form");
 
-inputX.addEventListener("keypress", (event) => {
-  if (event.key === "Enter" && inputX.value.length > 0) {
+inputX.addEventListener("keydown", (event) => {
+  if (
+    (event.key === "Enter" || event.key === "Tab") &&
+    inputX.value.length > 0
+  ) {
     playerX.style.marginRight = "30px";
     playerX.style.fontSize = "30px";
     playerX.style.textDecoration = "underline";
+    inputX.style.border = "none";
     playerX.innerHTML = inputX.value;
+    inputO.style.pointerEvents = "all";
     gameState.playerName[0] = inputX.value;
     winCounterX.innerHTML = `${gameState.playerName[0]} Score  =  0`;
+    if (gameState.playerName[0] && gameState.playerName[1]) {
+      board.style.pointerEvents = "all";
+      board.style.display = "block";
+      resetAll.style.display = "block";
+      clear.style.display = "block";
+      chosenPlayer();
+    }
+  } else if (
+    (event.key === "Enter" || event.key === "Tab") &&
+    inputX.value.length === 0
+  ) {
+    inputX.style.border = "2px solid red";
+    inputX.placeholder = "You must enter a name!";
   }
 });
 
-inputO.addEventListener("keypress", (event) => {
-  if (event.key === "Enter" && inputO.value.length > 0) {
+inputO.addEventListener("keydown", (event) => {
+  if (
+    (event.key === "Enter" || event.key === "Tab") &&
+    inputO.value.length > 0
+  ) {
     playerO.style.fontSize = "30px";
     playerO.style.textDecoration = "underline";
     playerO.innerHTML = inputO.value;
     gameState.playerName[1] = inputO.value;
     winCounterO.innerHTML = `${gameState.playerName[1]} Score  =  0`;
+    if (gameState.playerName[0] && gameState.playerName[1]) {
+      board.style.pointerEvents = "all";
+      board.style.display = "block";
+      resetAll.style.display = "block";
+      clear.style.display = "block";
+    }
     chosenPlayer();
-  } else if (event.key === "Enter") {
+  } else if (event.key === "Enter" || event.key === "Tab") {
     playerO.style.fontSize = "30px";
     playerO.style.textDecoration = "underline";
     playerO.innerHTML = "Computer";
     gameState.playerName[1] = "Computer";
     winCounterO.innerHTML = `${gameState.playerName[1]} Score  =  0`;
+    if (gameState.playerName[0] && gameState.playerName[1]) {
+      board.style.pointerEvents = "all";
+      board.style.display = "block";
+      resetAll.style.display = "block";
+      clear.style.display = "block";
+    }
     chosenPlayer();
   }
 });
@@ -221,7 +258,6 @@ inputO.addEventListener("keypress", (event) => {
 // ---------------------------------------------------------------------------------- //
 // Allows for specific functions to occur whenever you click on a specific "cell" in the HTML //
 
-let board = document.getElementById("tictactoeTable");
 let boardCounter = 0;
 
 board.addEventListener("click", (event) => {
@@ -252,7 +288,7 @@ board.addEventListener("click", (event) => {
       }
 
       if (!includesNull) {
-        winnerWinnerChickenDinner.innerHTML = `The board is filled, click 'Clear' to reset the game!`;
+        winnerWinnerChickenDinner.innerHTML = `The board is filled, click 'Clear Board' to reset the game!`;
         winnerWinnerChickenDinner.style.color = "rgb(255,0,0)";
         Array.from(tdElement).forEach((element) =>
           element.classList.add("theGameHasEnded")
@@ -297,10 +333,8 @@ function computerPlays() {
 
 // ---------------------------------------------------------------------------------- //
 // Allows for the clear button to make adjustments to the board as well as the other
-// elements that need to be cleared when the board is cleared. //
+// elements that need to be cleared when the board is finished.
 
-let clear = document.getElementById("clearButton");
-let counter = 0;
 clear.addEventListener("click", () => {
   [...document.querySelectorAll("td")].forEach(
     (tdDomElement) => (tdDomElement.innerHTML = "")
@@ -324,3 +358,8 @@ clear.addEventListener("click", () => {
 });
 
 // ---------------------------------------------------------------------------------- //
+// Completely resets the game board, names, and score when clicked by simply refreshing the page.
+
+resetAll.addEventListener("click", () => {
+  location.reload();
+});

@@ -29,12 +29,17 @@ input {
     margin-right: 35px;
 }
 
+#boxO {
+    pointer-events: none;
+}
+
 #playerX, #playerO {
     display: inline-flex;
 }
 
-table {
-    background-color: #baa898;
+#tictactoeTable {
+    display: none;
+    pointer-events: none;
     margin-top: 20px;
 }
 
@@ -51,6 +56,14 @@ td {
 
 td:hover {
     background-color: #bfd7ea;
+}
+
+#clearButton {
+    display: none;
+}
+
+#resetAll {
+    display: none;
 }
 
 button {
@@ -76,7 +89,7 @@ div {
     text-align: center;
     align-items: center;
     height: 75px;
-    width: 600px;
+    width: 1000px;
     font-size: 30px;
 }
 
